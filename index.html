@@ -1,11 +1,221 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Mon portfolio</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Fanny – Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blanc: #ffffff;
+    --creme: #f6fbff;
+    --ciel: #d4ecfb;
+    --ciel-vif: #9ad3f5;
+    --rose: #ffcfe0;
+    --bleu: #2a7bbf;
+    --encre: #2f5d86;
+    --gris: #58758f;
+    --titre: "Fredoka", "Trebuchet MS", sans-serif;
+    --texte: "Nunito", "Segoe UI", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--texte); color: var(--encre); background: var(--creme); line-height: 1.7; font-size: 1.05rem; }
+  a { color: var(--bleu); }
+  a:focus-visible { outline: 3px solid var(--rose); outline-offset: 3px; }
+  .conteneur { width: min(1040px, 100% - 2.5rem); margin-inline: auto; position: relative; }
+
+  /* Navigation */
+  header { position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,.93); backdrop-filter: blur(8px); border-bottom: 3px solid var(--ciel); }
+  nav { display: flex; justify-content: space-between; align-items: center; padding: .8rem 0; gap: 1rem; flex-wrap: wrap; }
+  .logo { font-family: var(--titre); font-weight: 600; font-size: 1.4rem; color: var(--bleu); text-decoration: none; }
+  nav ul { display: flex; gap: .4rem; list-style: none; flex-wrap: wrap; }
+  nav ul a { color: var(--encre); text-decoration: none; font-weight: 600; padding: .35rem .9rem; border-radius: 999px; }
+  nav ul a:hover { background: var(--rose); }
+
+  /* Nuages (formes en CSS) */
+  .nuage { position: absolute; background: var(--blanc); border-radius: 999px; width: var(--l, 150px); height: calc(var(--l, 150px) * .36); }
+  .nuage::before, .nuage::after { content: ""; position: absolute; background: var(--blanc); border-radius: 50%; }
+  .nuage::before { width: 45%; height: 130%; left: 14%; bottom: 35%; }
+  .nuage::after { width: 32%; height: 100%; right: 16%; bottom: 40%; }
+
+  /* Accueil */
+  .accueil { background: linear-gradient(180deg, var(--ciel-vif) 0%, var(--ciel) 100%); padding: 5rem 0 7rem; position: relative; overflow: hidden; }
+  .accueil .conteneur { display: grid; grid-template-columns: 1.4fr 1fr; gap: 3rem; align-items: center; z-index: 1; }
+  .accueil h1 { font-family: var(--titre); font-weight: 600; font-size: clamp(2.6rem, 6vw, 4.2rem); line-height: 1.1; margin-bottom: 1.1rem; color: var(--blanc); text-shadow: 0 3px 0 rgba(42,123,191,.35); }
+  .accueil p { color: var(--encre); font-weight: 600; max-width: 32rem; margin-bottom: 2rem; }
+  .boutons { display: flex; gap: .9rem; flex-wrap: wrap; }
+  .btn { display: inline-block; padding: .8rem 1.6rem; border-radius: 999px; font-weight: 700; text-decoration: none; border: 3px solid var(--blanc); }
+  .btn-plein { background: var(--bleu); color: var(--blanc); }
+  .btn-plein:hover { background: var(--encre); }
+  .btn-rose { background: var(--rose); color: var(--encre); }
+  .btn-rose:hover { background: var(--blanc); }
+  .portrait { aspect-ratio: 1; border-radius: 50%; background: var(--blanc); border: 8px solid var(--blanc); box-shadow: 0 8px 0 rgba(42,123,191,.25); display: grid; place-items: center; font-family: var(--titre); font-weight: 600; font-size: 5.5rem; color: var(--ciel-vif); overflow: hidden; position: relative; }
+  .portrait img { width: 100%; height: 100%; object-fit: cover; }
+  /* Bord en nuages en bas de l'accueil */
+  .accueil::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 40px; background: radial-gradient(circle at 25px 40px, var(--creme) 24px, transparent 25px) repeat-x; background-size: 50px 40px; }
+  .nuage-flotte { animation: flotte 7s ease-in-out infinite alternate; }
+  @keyframes flotte { to { transform: translateX(28px); } }
+  @media (prefers-reduced-motion: reduce) { .nuage-flotte { animation: none; } html { scroll-behavior: auto; } }
+
+  /* Sections */
+  section { padding: 4.5rem 0; }
+  h2 { font-family: var(--titre); font-weight: 600; font-size: clamp(1.8rem, 4vw, 2.4rem); margin-bottom: 1.5rem; color: var(--bleu); }
+  h2::after { content: ""; display: block; width: 70px; height: 8px; border-radius: 99px; background: var(--rose); margin-top: .5rem; }
+  .apropos .conteneur { display: grid; grid-template-columns: 1fr 1.6fr; gap: 3rem; }
+  .apropos p { color: var(--gris); max-width: 42rem; }
+  .apropos p + p { margin-top: 1rem; }
+
+  /* Projets */
+  .projets { background: var(--ciel); position: relative; }
+  .projets::before, .projets::after { content: ""; position: absolute; left: 0; right: 0; height: 30px; background-size: 50px 30px; background-repeat: repeat-x; }
+  .projets::before { top: -29px; background-image: radial-gradient(circle at 25px 30px, var(--ciel) 24px, transparent 25px); }
+  .projets::after { bottom: -29px; background-image: radial-gradient(circle at 25px 0, var(--ciel) 24px, transparent 25px); }
+  .grille { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1.6rem; }
+  .projet { background: var(--blanc); border-radius: 28px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 6px 0 var(--ciel-vif); }
+  .vignette { height: 150px; background: var(--ciel); position: relative; overflow: hidden; }
+  .vignette .nuage { --l: 120px; left: 24px; bottom: 28px; background: var(--blanc); }
+  .vignette::after { content: ""; position: absolute; width: 22px; height: 22px; border-radius: 50%; background: var(--rose); right: 28px; top: 26px; }
+  .projet:nth-child(2) .vignette { background: var(--rose); }
+  .projet:nth-child(2) .vignette::after { background: var(--ciel-vif); }
+  .projet:nth-child(3) .vignette { background: var(--ciel-vif); }
+  .projet-texte { padding: 1.4rem 1.5rem 1.6rem; display: flex; flex-direction: column; gap: .5rem; flex: 1; }
+  .projet h3 { font-family: var(--titre); font-weight: 600; font-size: 1.3rem; color: var(--encre); }
+  .projet p { color: var(--gris); font-size: .98rem; flex: 1; }
+  .projet a { font-weight: 700; text-decoration: none; margin-top: .3rem; }
+  .projet a:hover { text-decoration: underline; }
+
+  /* Compétences */
+  .competences { padding-top: 6rem; }
+  .competences ul { list-style: none; display: flex; flex-wrap: wrap; gap: .8rem; }
+  .competences li { background: var(--ciel); padding: .55rem 1.2rem; border-radius: 999px; font-weight: 700; }
+  .competences li:nth-child(even) { background: var(--rose); }
+
+  /* Contact */
+  .contact { background: linear-gradient(180deg, var(--ciel) 0%, var(--ciel-vif) 100%); text-align: center; position: relative; overflow: hidden; }
+  .contact .conteneur { z-index: 1; }
+  .contact p { color: var(--encre); font-weight: 600; max-width: 32rem; margin: 0 auto 1.8rem; }
+  .contact h2::after { margin-inline: auto; }
+  footer { text-align: center; padding: 1.8rem 0; color: var(--gris); font-size: .95rem; background: var(--creme); }
+
+  @media (max-width: 760px) {
+    .accueil .conteneur, .apropos .conteneur { grid-template-columns: 1fr; }
+    .portrait { max-width: 230px; order: -1; font-size: 4.5rem; }
+  }
+</style>
 </head>
 <body>
-  <h1>Bonjour, je suis Fanny</h1>
-  <p>Bienvenue sur mon portfolio.</p>
+
+<header>
+  <nav class="conteneur" aria-label="Navigation principale">
+    <a class="logo" href="#accueil">Fanny</a>
+    <ul>
+      <li><a href="#apropos">À propos</a></li>
+      <li><a href="#projets">Projets</a></li>
+      <li><a href="#competences">Compétences</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <!-- ACCUEIL : modifie le titre et la phrase de présentation -->
+  <div class="accueil" id="accueil">
+    <span class="nuage nuage-flotte" style="--l:170px; top:30px; left:6%;" aria-hidden="true"></span>
+    <span class="nuage" style="--l:120px; top:120px; right:8%;" aria-hidden="true"></span>
+    <span class="nuage nuage-flotte" style="--l:140px; bottom:70px; left:42%;" aria-hidden="true"></span>
+    <div class="conteneur">
+      <div>
+        <h1>Bonjour, je suis Fanny.</h1>
+        <p>Bienvenue dans mon petit coin du ciel. Voici mes projets et mes compétences.</p>
+        <div class="boutons">
+          <a class="btn btn-plein" href="#projets">Voir mes projets</a>
+          <a class="btn btn-rose" href="#contact">Me contacter</a>
+        </div>
+      </div>
+      <!-- Pour mettre ta photo : remplace "F" par <img src="images/photo.jpg" alt="Portrait de Fanny"> -->
+      <div class="portrait" aria-hidden="true">F</div>
+    </div>
+  </div>
+
+  <!-- À PROPOS -->
+  <section class="apropos" id="apropos">
+    <div class="conteneur">
+      <h2>À propos</h2>
+      <div>
+        <p>Présente-toi ici en quelques lignes : ton parcours, ta formation, ce qui te motive et le type de missions que tu recherches.</p>
+        <p>Ajoute un second paragraphe pour parler de ta façon de travailler ou de tes centres d'intérêt.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJETS : duplique un bloc <article> pour ajouter un projet -->
+  <section class="projets" id="projets">
+    <div class="conteneur">
+      <h2>Mes projets</h2>
+      <div class="grille">
+        <article class="projet">
+          <div class="vignette"><span class="nuage" aria-hidden="true"></span></div>
+          <div class="projet-texte">
+            <h3>Projet un</h3>
+            <p>Décris le projet en deux phrases : l'objectif, ton rôle et le résultat obtenu.</p>
+            <a href="#">Voir le projet</a>
+          </div>
+        </article>
+        <article class="projet">
+          <div class="vignette"><span class="nuage" aria-hidden="true"></span></div>
+          <div class="projet-texte">
+            <h3>Projet deux</h3>
+            <p>Indique les outils utilisés et ce que tu as appris en le réalisant.</p>
+            <a href="#">Voir le projet</a>
+          </div>
+        </article>
+        <article class="projet">
+          <div class="vignette"><span class="nuage" aria-hidden="true"></span></div>
+          <div class="projet-texte">
+            <h3>Projet trois</h3>
+            <p>Ajoute un lien vers le code, une démonstration ou un document PDF.</p>
+            <a href="#">Voir le projet</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPÉTENCES : modifie, ajoute ou supprime des <li> -->
+  <section class="competences" id="competences">
+    <div class="conteneur">
+      <h2>Compétences</h2>
+      <ul>
+        <li>HTML et CSS</li>
+        <li>Communication</li>
+        <li>Gestion de projet</li>
+        <li>Travail en équipe</li>
+        <li>Créativité</li>
+        <li>Anglais</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CONTACT : remplace l'adresse e-mail -->
+  <section class="contact" id="contact">
+    <span class="nuage nuage-flotte" style="--l:150px; top:24px; right:10%;" aria-hidden="true"></span>
+    <span class="nuage" style="--l:110px; bottom:30px; left:8%;" aria-hidden="true"></span>
+    <div class="conteneur">
+      <h2>Travaillons ensemble</h2>
+      <p>Une question, une proposition ? Écris-moi, je réponds rapidement.</p>
+      <a class="btn btn-plein" href="mailto:ton.adresse@exemple.fr">Envoyer un e-mail</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>© 2026 Fanny. Fait avec ♡</p>
+</footer>
+
 </body>
 </html>
+
